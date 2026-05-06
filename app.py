@@ -6,10 +6,11 @@ from datetime import date
 # --- Database Connection ---
 try:
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="12345",
-        database="vehicle_service"
+        host="trolley.proxy.rlwy.net",
+port=12569,
+user="root",
+password="COTAetjZfIfkLoOCtMRgyYwmPPEfBjzt",
+database="vehicle_service"
     )
     cursor = conn.cursor()
 except mysql.connector.Error as err:
@@ -126,7 +127,7 @@ with st.expander("📝 Register New Service", expanded=False):
                     cursor.execute(insert_query, (name, vehicle, service_type, service_date, "Pending", fixed_cost))
                     conn.commit()
                     st.success("✅ Service registered successfully!")
-                    st.rerun()
+                  
                 except Exception as e:
                     st.error(f"❌ Error: {e}")
             else:

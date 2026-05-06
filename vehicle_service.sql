@@ -1,4 +1,4 @@
-create database vehicle_service;
+
 use vehicle_service;
 CREATE TABLE services(
     customer_name VARCHAR(100),
