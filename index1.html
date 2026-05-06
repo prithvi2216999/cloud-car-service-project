@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vehicle Service Centre</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <style>
+    body {
+      background-color: #f3f4f6;
+    }
+
+    .input-field {
+      @apply w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200;
+    }
+
+    .submit-button {
+      @apply w-full py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition-all duration-300;
+    }
+
+    .form-container {
+      animation: fadeInUp 1s ease-out both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+  <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full form-container">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6 animate__animated animate__fadeInDown">
+      🚘 Vehicle Service Entry
+    </h2>
+
+    <form id="serviceForm" class="space-y-5">
+      <input type="text" id="name" placeholder="Customer Name" class="input-field" required />
+      <input type="text" id="vehicle" placeholder="Vehicle Number" class="input-field" required />
+      <select id="serviceType" class="input-field" required>
+        <option value="">Select Service Type</option>
+        <option value="Oil Change">Oil Change</option>
+        <option value="Engine Repair">Engine Repair</option>
+        <option value="Tire Replacement">Tire Replacement</option>
+        <option value="Full Service">Full Service</option>
+      </select>
+      <input type="date" id="date" class="input-field" required />
+      <button type="submit" class="submit-button animate__animated animate__pulse">Submit Entry</button>
+    </form>
+
+    <div id="successMsg"
+      class="hidden text-green-600 text-center mt-5 font-semibold text-lg animate__animated animate__bounceIn">
+      ✅ Entry Saved Successfully!
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('serviceForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const vehicle = document.getElementById('vehicle').value.trim();
+      const serviceType = document.getElementById('serviceType').value;
+      const date = document.getElementById('date').value;
+
+      if (name && vehicle && serviceType && date) {
+        const payload = { name, vehicle, serviceType, date };
+
+        try {
+          const res = await fetch("/api/service", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.ok) {
+            document.getElementById('successMsg').classList.remove('hidden');
+            this.reset();
+            setTimeout(() => {
+              document.getElementById('successMsg').classList.add('hidden');
+            }, 3000);
+          } else {
+            alert("Failed to save entry.");
+          }
+        } catch (err) {
+          console.error("Error:", err);
+          alert("Server error.");
+        }
+      }
+    });
+  </script>
+</body>
+</html>
