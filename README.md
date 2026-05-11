@@ -18,7 +18,7 @@ Cloud-based vehicle service tracking web application built using Streamlit, Pyth
 - GitHub
 
 ## Live Project
-http://http://35.154.199.118:8501
+http://35.154.199.118:8501
 
 ## Installation
 
